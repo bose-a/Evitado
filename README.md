@@ -15,9 +15,22 @@
   ```
 
   - Make sure you reboot your computer, then run `nvidia-smi` to ensure the driver is working correctly
+
   - This driver version may be overridden by later steps—but that's OK, we just need to be able to use the `nvidia-smi` command for now.
-  - If unable to install the latest driver through the default app, run `sudo apt get <driver>` and reboot.
-  - If `nvidia-smi` still doesn't work, it may be because you have a firmware password for your Linux operating system. Run `sudo update-secureboot-policy --enroll-key` and reboot, making sure to go through the `Enroll MOK key` process when prompted.  
+
+  - If unable to install the latest driver through the default app, run:
+
+    ```bash
+    sudo apt get <driver>
+    sudo reboot
+    ```
+
+  - If `nvidia-smi` still doesn't work, it may be because you have a firmware password for your Linux operating system. Run:
+
+    ```bash
+    sudo update-secureboot-policy --enroll-key
+    sudo reboot # Make sure to go through the 'Enroll MOK key' process.
+    ```
 
 - **If using an NVIDIA GPU that has a compute capability >= 3.5, install the latest stable versions of CUDA, cuDNN, and TensorFlow normally. We'll use virtual environments with `Anaconda`** to make versioning easier.
 
