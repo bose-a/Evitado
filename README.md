@@ -10,7 +10,7 @@
 
 - **Install the latest *tested* driver for your graphics card:** 
 
-  - ```bash
+    ```
     Software & Updates > Additional Drivers > Select NVIDIA driver > Apply
     ```
 
