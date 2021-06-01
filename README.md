@@ -216,3 +216,28 @@ sudo apt install nvidia-cuda-toolkit
   If correct, you'll see something around the lines of `Created TensorFlow device -> physical GPU` outputted. 
 
 - Note that when we were building from source, we didn't use virtual environments. If we wanted to, we'd have to install all the packages to our active environment.
+
+# Point Cloud Classification
+
+- Cloned repository at https://github.com/charlesq34/pointnet.git
+- Modified `provider.py` to include `--no check-certificate` flag for downloading the ModelNet40 training data. Without this flag, running `train.py` failed because of a certificate error. 
+- Began training the given model with a batch size of 8. It took 5 epoch's to achieve an eval accuracy of 70% and roughly 2 hours to do so on a GTX 750M. 
+- Evaluated the performance of the incomplete model by running `python evaluate.py --visu`. Surprisingly, classifiying the airplane had an accuracy of 0.97! This suggests that we don't need the full ModelNet40 training set if we only want to classify something specific.  
+- General tips about neural networks:
+  - The number of epoch's is not that significant—determine your tolerance for error, and then iterate for as many epoch's as needed until you reach that threshold. For example, it took me 5 epoch's to achieve ~70% accuracy. If 70% was the minimum accuracy I desired, I could just stop there.
+  - Look out for overfitting. For the first few iterations, mean error begins to decrease. However, in some cases, training the model for too long may result in overfitting. You'll notice the error start to increase again; this is a warning sign for overfitting. 
+  - Epoch: one learning cycle where the classifier sees the whole training dataset. 
+  - Does more neurons -> more accuracy? 
+  - If you get an OOM (Out of Memory) error while trying to train your model, reduce your batch size and/or image dimensions. In general,  the 'standard' batch size is 32 (Usually powers of 2).
+- Which implementation of the PointNet libary do we need?
+  1. Classification -> Identify which plane (`PointNet`, `PointNet++`)
+  2. Part Segmentation -> Visualize the plane's different parts, i.e this is the wing, this is the body, etc. 
+  3. Semantic Segmentation -> Is there a plane present in the first place?
+     - `VoxelNet`: based on PointNet, efficiently handles LiDar point clouds
+     - `Frustrum PointNets`: 3D object detection w/ RGB-D data
+- Outstanding Questions
+  1. All of these models are traineed on the ModelNet40 or some other large dataset. Do we need to give our model all of this data? Does it need to be given a boat, couch, etc?
+  2. Will we be placing the sensor on the wing and then classifying? Or are we giving our model a birds-eye view of the plane?
+
+
+
